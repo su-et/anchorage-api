@@ -1,0 +1,705 @@
+FORMAT: 1A
+
+# Anchorage
+The Anchorage API is used to create new apps and new instances
+(enviroments) for apps (dev, test, stage, etc.) on the anchorage platform.
+
+# Group Anchorage
+Resources of the Anchorage API
+
+## Anchorage Collection [/anchorage/v1]
+### List All Endpoints [GET]
++ Response 200 (application/json)
+
+        [
+            {
+                "path": "/Users",
+                "description": "Users"
+            },
+            {
+                "path": "/Groups",
+                "description": "Development Teams"
+            },
+            {
+                "path": "/Apps",
+                "description": "Applications"
+            },
+            {
+                "path": "/Repositories",
+                "description": "Repositories"
+            },
+            {
+                "path": "/BuildJobs",
+                "description": "Continuous Integration Jobs"
+            },
+            {
+                "path": "/ResourceTypes",
+                "description": "Resource Types"
+            },
+            {
+                "path": "/ServiceProviderConfig",
+                "description": "Service Provider Configuration"
+            },
+            {
+                "path: "/Schemas",
+                "description": "Schema Definitions"
+            }
+        ]
+
+# Group Anchorage ResourceTypes
+
+## ResourceTypes Collection [/anchorage/v1/ResourceTypes]
+
+### List All ResourceTypes [GET]
++ Response 200 (application/scim+json)
+
+        {
+            "totalResults": 2,
+            "itemsPerPage": 10,
+            "startIndex":   1,
+            "schemas":      [   "urn:ietf:params:scim:api:messages:2.0:ListResponse" ],
+            "Resources":    [
+                {
+                    "schemas":          [ "urn:ietf:params:scim:schemas:core:2.0:ResourceType" ],
+                    "id":               "User",
+                    "name":             "User",
+                    "endpoint":         "/Users",
+                    "description":      "User Account",
+                    "schema":           "urn:ietf:params:scim:schemas:core:2.0:User",
+                    "schemaExtensions": [
+                        {
+                            "schema":   "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User",
+                            "required": true
+                        }
+                    ],
+                    "meta":             {
+                        "location":     "https://api.stanford.edu/anchorage/v1/ResourceTypes/User",
+                        "resourceType": "ResourceType"
+                    }
+                },
+                {
+                    "schemas":          [ "urn:ietf:params:scim:schemas:core:2.0:ResourceType" ],
+                    "id":               "Group",
+                    "name":             "Group",
+                    "endpoint":         "/Groups",
+                    "description":      "Group",
+                    "schema":           "urn:ietf:params:scim:schemas:core:2.0:Group",
+                    "meta":             {
+                        "location":     "https://api.stanford.edu/anchorage/v1/ResourceTypes/ResourceTypes/Group",
+                        "resourceType": "ResourceType"
+                    }
+                }
+            ]
+        }
+
+
+# Group Anchorage Groups
+
+## Groups Collection [/anchorage/v1/Groups]
+
+### List all Groups [GET]
++ Response 200 (application/scim+json)
+
+        {
+            "totalResults": 2,
+            "itemsPerPage": 10,
+            "startIndex":   1,
+            "schemas":      [   "urn:ietf:params:scim:api:messages:2.0:ListResponse" ],
+            "Groups":       [
+                {
+                    "schemas":      [ "urn:ietf:params:scim:schemas:core:2.0:Group" ],
+                    "id":           "1915db2d-8f47-429b-84aa-ef46b9d22e05",
+                    "externId":     "et",
+                    "displayName":  "Emerging Tech",
+                    "members":      [
+                        {
+                            "value":    "068a2233-b847-4c2b-851f-1a8dfbd1505c",
+                            "$ref":     "https://api.stanford.edu/anchorage/v1/Users/068a2233-b847-4c2b-851f-1a8dfbd1505c",
+                            "display":  "Jane Stanford"
+                        },
+                        {
+                            "value":    "0717c22f-1113-400d-a7ef-95482127889a",
+                            "$ref":     "https://api.stanford.edu/anchorage/v1/Users/0717c22f-1113-400d-a7ef-95482127889a",
+                            "display":  "Leland Stanford"
+                        }
+                    ],
+                    "meta": {
+                        "resourceType": "Group",
+                        "created":      "2015-05-13T17:27:00Z",
+                        "lastModified": "2015-05-13T17:27:00Z",
+                        "version":      "W\/\"11abb5d5-cefc-4edc-a672-39d73bb5aac7\"",
+                        "location":     "https://api.stanford.edu/anchorage/v1/Groups/1915db2d-8f47-429b-84aa-ef46b9d22e05"
+                    }
+                }
+            ]
+        }
+
+### Create a Group [POST]
++ Request (application/scim+json)
+
+        {
+            "schemas":      ["urn:ietf:params:scim:schemas:core:2.0:Group"],
+            "displayName":  "Stanford Web Services",
+            "externalId":   "suws",
+        }
+
++ Response 201 (application/scim+json)
+
+    + Headers
+    
+            Location: https://api.stanford.edu/anchorage/v1/Groups/299bd7b2-cdf7-4513-99bf-bd321ad5adbe
+            ETag: W/"92fca2f058aa9264a343783a19aa92bdd9965e9f"
+
+    + Body
+
+            {
+                "schemas":      [ "urn:ietf:params:scim:schemas:core:2.0:Group" ],
+                "id":           "299bd7b2-cdf7-4513-99bf-bd321ad5adbe",
+                "externalId":   "suws",
+                "displayName":  "Stanford Web Services",
+                "members":      [],
+                "meta":         {
+                    "resourceType": "Group",
+                    "created":      "2015-05-13T17:21:00.000Z",
+                    "lastModified": "2015-05-13T17:21:00.000Z",
+                    "location":     "https://api.stanford.edu/anchorage/v1/Groups/299bd7b2-cdf7-4513-99bf-bd321ad5adbe",
+                    "version":      "W\/\"92fca2f058aa9264a343783a19aa92bdd9965e9f\""
+                }
+            }
+
+## Group [/anchorage/v1/Groups/{group_id}]
+
++ Parameters
+    + group_id (string) - ID of the group
+
+### View Group Details [GET]
+
++ Response 200 (application/scim+json)
+
+        {
+            "schemas":      [ "urn:ietf:params:scim:schemas:core:2.0:Group" ],
+            "id":           "1915db2d-8f47-429b-84aa-ef46b9d22e05",
+            "externId":     "et",
+            "displayName":  "Emerging Tech",
+            "members":      [
+                {
+                    "value":    "068a2233-b847-4c2b-851f-1a8dfbd1505c",
+                    "$ref":     "https://api.stanford.edu/anchorage/v1/Users/068a2233-b847-4c2b-851f-1a8dfbd1505c",
+                    "display":  "Jane Stanford"
+                },
+                {
+                    "value":    "0717c22f-1113-400d-a7ef-95482127889a",
+                    "$ref":     "https://api.stanford.edu/anchorage/v1/Users/0717c22f-1113-400d-a7ef-95482127889a",
+                    "display":  "Leland Stanford"
+                }
+            ],
+            "meta": {
+                "resourceType": "Group",
+                "created":      "2015-05-13T17:27:00Z",
+                "lastModified": "2015-05-13T17:27:00Z",
+                "version":      "W\/\"11abb5d5-cefc-4edc-a672-39d73bb5aac7\"",
+                "location":     "https://api.stanford.edu/anchorage/v1/Groups/1915db2d-8f47-429b-84aa-ef46b9d22e05"
+            }
+        }
+
+### Update Group [PUT]
+
++ Request (application/scim+json)
+
+    + Headers
+    
+            If-Match: W/"92fca2f058aa9264a343783a19aa92bdd9965e9f"
+
+    + Body
+
+            {
+                "schemas":      [ "urn:ietf:params:scim:schemas:core:2.0:Group" ],
+                "id":           "299bd7b2-cdf7-4513-99bf-bd321ad5adbe",
+                "displayName":  "Stanford University Web Services",
+                "externalId":   "suws",
+                "members":      [
+                    {
+                        "value":    "0717c22f-1113-400d-a7ef-95482127889a",
+                        "$ref":     "https://api.stanford.edu/anchorage/v1/Users/0717c22f-1113-400d-a7ef-95482127889a",
+                        "display":  "Leland Stanford"
+                    }                    
+                ]
+            }
+
++ Response 200 (application/scim+json)
+
+    + Headers
+    
+            Location: https://api.stanford.edu/anchorage/v1/Groups/299bd7b2-cdf7-4513-99bf-bd321ad5adbe
+            ETag: W/"4b228ec0cebedaa7085014d7b758fa48acffa7c4"
+
+    + Body
+
+            {
+                "schemas":      [ "urn:ietf:params:scim:schemas:core:2.0:Group" ],
+                "id":           "299bd7b2-cdf7-4513-99bf-bd321ad5adbe",
+                "externalId":   "suws",
+                "displayName":  "Stanford Web Services",
+                "members":      [
+                    {
+                        "value":    "0717c22f-1113-400d-a7ef-95482127889a",
+                        "$ref":     "https://api.stanford.edu/anchorage/v1/Users/0717c22f-1113-400d-a7ef-95482127889a",
+                        "display":  "Leland Stanford"
+                    }                    
+                ],
+                "meta":         {
+                    "resourceType": "Group",
+                    "created":      "2015-05-13T17:21:00.000Z",
+                    "lastModified": "2015-05-13T17:21:00.000Z",
+                    "location":     "https://api.stanford.edu/anchorage/v1/Groups/299bd7b2-cdf7-4513-99bf-bd321ad5adbe",
+                    "version":      "W\/\"4b228ec0cebedaa7085014d7b758fa48acffa7c4\""
+                }
+            }
+
+### Delete Group [DELETE]
+
++ Request (application/scim+json)
+
+    + Headers
+    
+            If-Match: W/"4b228ec0cebedaa7085014d7b758fa48acffa7c4"
+
++ Response 204 (application/scim+json)
+
+
+
+# Group Anchorage Apps
+
+## Apps Collection [/anchorage/v1/apps]
+
+### List all Apps [GET]
++ Response 200 (application/json)
+
+        [{
+            "id": 1,
+            "title": "History",
+            "name": "history-new",
+            "group": "humsci",
+            "type": "container",
+            "repo": "git@gitlab.stanford.edu:humsci/history.git",
+            "owners": [ "SUNetID-or-group" ],
+            "teams": [{
+                "name":     "Stanford Web Services",
+                "path":     "/anchorage/v1/teams/2",
+                "roles":    [ "developer" ],
+            },{
+                "name":     "HSDO Web Team",
+                "path":     "/anchorage/v1/teams/3"
+                "roles":    [ "developer", "admin" ],
+            }],
+            "base": "drupal-jsa",
+            "status": "active",
+            "environments": [{
+                "id": 1,
+                "environment": "",
+                "status": "active",
+                "url": "https://history.stanford.edu/",
+                "branch": "master",
+                "version": "2015-02-05-2",
+                "ci": "https://ci.stanford.edu/job/history/",
+                "fileBucket": "s3://files.history.stanford.edu",
+                "database": {
+                    "name": "history",
+                    "host": "db.history.stanford.edu",
+                    "prefix": "VA3C",
+                    "user": "history",
+                    "port": "3306",
+                    "type": "mysql"
+                }
+            },{
+                "id": 2,
+                "environment": "dev",
+                "url": "https://dev.history.stanford.edu/",
+                "branch": "dev",
+                "version": "2015-03-01-1",
+                "status": "active",
+                "ci": "https://ci.stanford.edu/job/history-dev/",
+                "fileBucket": "s3://files.dev.history.stanford.edu",
+                "database": {
+                    "name": "history_dev",
+                    "host": "db.dev.history.stanford.edu",
+                    "prefix": "IkEL",
+                    "user": "history_dev",
+                    "port": "3306",
+                    "type": "mysql"
+                }
+            }]
+        }, {
+            "id": 2,
+            "title":    "Emergency",
+            "name":     "emergency",
+            "group":    "ucomm",
+            "type":     "beanstalk",
+            "repo":     "git@gitlab.stanford.edu:ucomm/emergency.git",
+            "owners":   [ "SUNetID-or-group" ],
+            "teams": [{
+                "name":     "Emerging Technology",
+                "path":     "/anchorage/v1/teams/1",
+                "roles":    [ "developer" ],
+            },{
+                "name":     "UComm",
+                "path":     "/anchorage/v1/teams/4"
+                "roles":    [ "developer", "admin" ],
+            }],
+            "status": "active",
+            "environments": [{
+                "id": 3,
+                "environment": "",
+                "url": "https://emergency.stanford.edu/",
+                "branch": "master",
+                "version": "2015-01-07-1",
+                "status": "active",
+                "ci": "https://ci.stanford.edu/job/emergency/",
+                "fileBucket": "s3://files.emergency.stanford.edu",
+                "database": {
+                    "name": "emergency",
+                    "host": "db.emergency.stanford.edu",
+                    "prefix": "5xpz",
+                    "user": "emergency",
+                    "port": "3306",
+                    "type": "mysql"
+                }
+            },{
+                "id": 4,
+                "environment": "test",
+                "url": "https://test.emergency.stanford.edu/",
+                "branch": "test",
+                "version": "2015-01-11-2",
+                "status": "active",
+                "ci": "https://ci.stanford.edu/job/emergency-test/",
+                "fileBucket": "s3://files.test.emergency.stanford.edu",
+                "database": {
+                    "name": "emergency_test",
+                    "host": "db.test.emergency.stanford.edu",
+                    "user": "emergency_test",
+                    "prefix": "xahN",
+                    "port": "3306",
+                    "type": "mysql"
+                }
+            }]
+        }]
+
+### Create an App [POST]
++ Request (application/json)
+
+        { 
+            "title":    "IT Arch Blog",
+            "name":     "itarch",
+            "group":    "its-et",
+            "type":     "container",
+            "owners":   "itlab:staff",
+            "teams": [{
+                "path":     "/anchorage/v1/teams/1",
+                "roles":    [ "developer", "admin" ],
+            }],
+            "base":     "core/wordpress",
+        }
+
++ Response 201 (application/json)
+
+        {
+            "id": 3,
+            "title": "IT Arch Blog",
+            "name": "itarch",
+            "group": "et",
+            "type": "container",
+            "repo": "git@gitlab.stanford.edu:et/itarch.git",
+            "owners": [ "itlab:staff" ],
+            "teams": [{
+                "name":     "Emerging Technology",
+                "path":     "/anchorage/v1/teams/1",
+                "roles":    [ "developer", "admin" ],
+            }],
+            "base": "core/wordpress",
+            "status": "active",
+            "environments":
+                [{
+                    "id": 5,
+                    "environment": "",
+                    "branch": "master",
+                    "version": "2015-01-07-1",
+                    "status": "active",
+                    "ci": "https://ci.stanford.edu/job/itarch/",
+                    "fileBucket": "s3://files.itarch.stanford.edu",
+                    "database": {
+                        "name": "itarch",
+                        "host": "db.itarch.stanford.edu",
+                        "prefix": "m5Vf",
+                        "user": "itarch",
+                        "port": "3306",
+                        "type": "mysql"
+                    }
+                }]
+        }
+
+## App [/anchorage/v1/apps/{id}]
+A single App object with all its details
+
++ Parameters
+    + id (required, number, `3`) ... Numeric `id` of the App to perform action with. Has example value.
+
+### Retrieve an App [GET]
++ Response 200 (application/json)
+
+        {
+            "id": 3,
+            "title": "IT Arch Blog",
+            "name": "itarch",
+            "group": "et",
+            "type": "container",
+            "repo": "git@gitlab.stanford.edu:et/itarch.git",
+            "owners": [ "itlab:staff" ],
+            "teams": [{
+                "name":     "Emerging Technology",
+                "path":     "/anchorage/v1/teams/1",
+                "roles":    [ "developer", "admin" ],
+            }],
+            "status": "active",
+            "environments":
+                [{
+                    "id": 5,
+                    "environment": "",
+                    "branch": "master",
+                    "version": "2015-01-07-1",
+                    "status": "active",
+                    "ci": "https://ci.stanford.edu/job/itarch/",
+                    "fileBucket": "s3://files.itarch.stanford.edu",
+                    "database": {
+                        "name": "itarch",
+                        "host": "db.itarch.stanford.edu",
+                        "prefix": "m5Vf",
+                        "user": "itarch",
+                        "port": "3306",
+                        "type": "mysql"
+                    }
+                }]
+        }
+
+### Update an App [PUT]
++ Request (application/json)
+
+        {
+            "title": "IT Arch Blog",
+            "name": "itarch",
+            "group": "et",
+            "type": "container",
+            "repo": "git@gitlab.stanford.edu:et/itarch.git",
+            "owners": [ "uit:et:staff" ],
+            "teams": [{
+                "name":     "Emerging Technology",
+                "path":     "/anchorage/v1/teams/1",
+                "roles":    [ "developer", "admin" ],
+            }],
+            "status": "active",
+            "environments":
+                [{
+                    "id": 5,
+                    "environment": "",
+                    "branch": "master",
+                    "version": "2015-01-07-1",
+                    "status": "active",
+                    "ci": "https://ci.stanford.edu/job/itarch/",
+                    "fileBucket": "s3://files.itarch.stanford.edu",
+                    "database": {
+                        "name": "itarch",
+                        "host": "db.itarch.stanford.edu",
+                        "prefix": "m5Vf",
+                        "user": "itarch",
+                        "port": "3306",
+                        "type": "mysql"
+                    }
+                }]
+        }
++ Response 200 (application/json)
+
+        {
+            "id": 3,
+            "title": "IT Arch Blog",
+            "name": "itarch",
+            "group": "et",
+            "type": "container",
+            "repo": "git@gitlab.stanford.edu:et/itarch.git",
+            "owners": [ "itlab:staff" ],
+            "teams": [{
+                "name":     "Emerging Technology",
+                "path":     "/anchorage/v1/teams/1",
+                "roles":    [ "developer", "admin" ],
+            }],
+            "status": "active",
+            "environments":
+                [{
+                    "id": 5,
+                    "environment": "",
+                    "branch": "master",
+                    "version": "2015-01-07-1",
+                    "status": "active",
+                    "ci": "https://ci.stanford.edu/job/itarch/",
+                    "fileBucket": "s3://files.itarch.stanford.edu",
+                    "database": {
+                        "name": "itarch",
+                        "host": "db.itarch.stanford.edu",
+                        "prefix": "m5Vf",
+                        "user": "itarch",
+                        "port": "3306",
+                        "type": "mysql"
+                    }
+                }]
+        }
+
+### Update an App [PATCH]
++ Request (application/json-patch+json)
+
+        {
+            "op": "replace",
+            "path": "/owners",
+            "value": [ "uit:et:staff" ]
+        }
+
++ Response 204
+
+### Remove an App [DELETE]
++ Response 204
+
+## Environments Collection for an App [/anchorage/v1/apps/{id}/environments]
+Environments for an App
+
++ Parameters
+    + id (required, number, `3`) ... Numeric `id` of the App to perform action with. Has example value.
+
+### List all Apps for an Environment [GET]
+
++ Response 200 (application/json)
+
+            [{
+                "id": 5,
+                "environment": "",
+                "branch": "master",
+                "version": "2015-01-07-1",
+                "status": "active",
+                "ci": "https://ci.stanford.edu/job/itarch/",
+                "fileBucket": "s3://files.itarch.stanford.edu",
+                "database": {
+                    "name": "itarch",
+                    "host": "db.itarch.stanford.edu",
+                    "prefix": "m5Vf",
+                    "user": "itarch",
+                    "port": "3306",
+                    "type": "mysql"
+                }
+            }]
+
+### Create an App Environment [POST]
++ Request (application/json)
+
+        { 
+            "environment": "dev"
+        }
+
++ Response 201 (application/json)
+
+        {
+            "id": 6,
+            "environment": "dev",
+            "branch": "dev",
+            "version": "2015-01-07-1",
+            "status": "active",
+            "ci": "https://ci.stanford.edu/job/itarch-dev/",
+            "fileBucket": "s3://files.dev.itarch.stanford.edu",
+            "database": {
+                "name": "itarch_dev",
+                "host": "db.dev.itarch.stanford.edu",
+                "prefix": "SY0L",
+                "user": "itarch_dev",
+                "port": "3306",
+                "type": "mysql"
+            }
+        }
+
+## Environment [/apps/v1/{appid}/environments/{id}]
+A single Environment object with all its details
+
++ Parameters
+    + appid (required, number, `3`) ... Numeric `id` of the App containing the Environment. Has example value.
+    + id (required, number, `6`) ... Numeric `id` of the Environment to perform action with. Has example value.
+
+### Retrieve an Environment [GET]
++ Response 200 (application/json)
+
+        {
+            "id": 5,
+            "environment": "",
+            "branch": "master",
+            "version": "2015-01-07-1",
+            "status": "active",
+            "ci": "https://ci.stanford.edu/job/itarch/",
+            "fileBucket": "s3://files.itarch.stanford.edu",
+            "database": {
+                "name": "itarch",
+                "host": "db.itarch.stanford.edu",
+                "prefix": "m5Vf",
+                "user": "itarch",
+                "port": "3306",
+                "type": "mysql"
+            }
+        }
+
+### Update an App Environment [PUT]
++ Request (application/json)
+
+        {
+            "id": 5,
+            "environment": "",
+            "branch": "master",
+            "version": "2015-01-07-1",
+            "status": "inactive",
+            "ci": "https://ci.stanford.edu/job/itarch/",
+            "fileBucket": "s3://files.itarch.stanford.edu",
+            "database": {
+                "name": "itarch",
+                "host": "db.itarch.stanford.edu",
+                "prefix": "m5Vf",
+                "user": "itarch",
+                "port": "3306",
+                "type": "mysql"
+            }
+        }
+
++ Response 200 (application/json)
+
+        {
+            "id": 5,
+            "environment": "",
+            "branch": "master",
+            "version": "2015-01-07-1",
+            "status": "inactive",
+            "ci": "https://ci.stanford.edu/job/itarch/",
+            "fileBucket": "s3://files.itarch.stanford.edu",
+            "database": {
+                "name": "itarch",
+                "host": "db.itarch.stanford.edu",
+                "prefix": "m5Vf",
+                "user": "itarch",
+                "port": "3306",
+                "type": "mysql"
+            }
+        }
+
+### Update an App Environment [PATCH]
++ Request (application/json-patch+json)
+
+        {
+            "op": "replace",
+            "path": "/status",
+            "value": "inactive"
+        }
+
++ Response 204
+
+### Remove an Environment [DELETE]
++ Response 204
+
